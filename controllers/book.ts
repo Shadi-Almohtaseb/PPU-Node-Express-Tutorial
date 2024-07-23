@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Book } from "../db/entities/Book.js";
+import { AppError } from "../errors/AppErrors.js";
 
 const books = [
     {
@@ -66,21 +67,14 @@ const deleteBook = (req: Request, res: Response) => {
     })
 }
 
-const getSingleBook = (req: Request, res: Response) => {
-    const bookId = Number(req.params.id);
-
-    const book = books.find((book) => book.id === bookId)
+const getSingleBook = async (bookId: any) => {
+    const book = await Book.findOne({ where: { id: bookId } })
 
     if (!book) {
-        res.status(404).json({
-            message: "book not found"
-        })
+        throw new AppError("book not found", 404, true)
     }
 
-    res.status(200).json({
-        message: "success",
-        book: book
-    })
+    return book
 }
 
 export { filterArrayController, getAllBooks, createBook, deleteBook, getSingleBook }

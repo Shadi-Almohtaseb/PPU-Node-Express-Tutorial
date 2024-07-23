@@ -3,6 +3,7 @@ import express from 'express';
 import env from "dotenv";
 import bookRoute from "./routes/book.js"
 import dataSource from "./db/dbConfig.js";
+import { customErrorHandler, DefaultErrorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 env.config();
@@ -16,12 +17,15 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/books", bookRoute);
 
 
+app.use(customErrorHandler)
+
+app.use(DefaultErrorHandler)
+
 dataSource.initialize().then(() => {
     console.log("connected to DB");
 }).catch(err => {
     console.error('Failed to connect to DB: ' + err);
 });
-
 
 app.listen(PORT, () => {
     console.log(`server is running on host: http://localhost:${PORT}`);
