@@ -6,3 +6,4 @@ const logRequestMiddleware = (req: Request, res: Response, next: NextFunction) =
 }
 
 export { logRequestMiddleware }
+
