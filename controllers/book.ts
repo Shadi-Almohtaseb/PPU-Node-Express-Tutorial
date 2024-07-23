@@ -26,7 +26,9 @@ const filterArrayController = (req: Request, res: Response) => {
     })
 }
 
-const getAllBooks = (req: Request, res: Response) => {
+const getAllBooks = async (req: Request, res: Response) => {
+    const books = await Book.find()
+
     res.json({
         message: "getting all books successfully",
         status: true,
