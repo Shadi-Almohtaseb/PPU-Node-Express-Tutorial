@@ -7,6 +7,7 @@ import dataSource from "./db/dbConfig.js";
 const app = express();
 env.config();
 const PORT = process.env.PORT || 5000;
+app.use(express.json())
 
 app.get("/", (req: Request, res: Response) => {
     res.send("hello world");

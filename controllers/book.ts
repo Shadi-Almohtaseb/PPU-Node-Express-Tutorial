@@ -35,10 +35,9 @@ const getAllBooks = (req: Request, res: Response) => {
 }
 
 const createBook = (req: Request, res: Response) => {
-    const newBook = Book.create({
-        author: "test author",
-        bookName: "test book"
-    }).save()
+    const bookToAdd = req.body
+
+    const newBook = Book.create(bookToAdd).save()
 
     res.status(201).json({
         message: "created successfully",
