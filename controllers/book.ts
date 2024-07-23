@@ -37,15 +37,21 @@ const getAllBooks = async (req: Request, res: Response) => {
     })
 }
 
-const createBook = (req: Request, res: Response) => {
-    const bookToAdd = req.body
+const createBook = async (bookFromPostman: Book) => {
+    const book = await Book.findOne({
+        where: [
+            { bookName: bookFromPostman.bookName },
+            { author: bookFromPostman.author }
+        ]
+    });
 
-    const newBook = Book.create(bookToAdd).save()
+    if (book) {
+        throw new AppError("book already exists", 409, true)
+    }
 
-    res.status(201).json({
-        message: "created successfully",
-        newBook: newBook
-    })
+    const newBook = Book.create(bookFromPostman)
+
+    return newBook.save()
 }
 
 const deleteBook = (req: Request, res: Response) => {

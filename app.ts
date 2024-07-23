@@ -16,7 +16,6 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/books", bookRoute);
 
-
 app.use(customErrorHandler)
 
 app.use(DefaultErrorHandler)
