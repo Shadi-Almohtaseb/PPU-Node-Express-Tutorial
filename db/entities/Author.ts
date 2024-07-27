@@ -9,17 +9,14 @@ export class Author extends BaseEntity {
     @Column({ length: 255 })
     name: string
 
-    @Column()
+    @Column( { length: 255 })
     email: string
 
     @Column({ length: 255 })
     password: string
 
-    @Column({ length: 255 })
+    @Column({ length: 255, nullable: true })
     phone: string
-    
-    @Column({ length: 537 })
-    test: string
 
     @OneToMany(() => Book, book => book.author)
     books: Book[]
