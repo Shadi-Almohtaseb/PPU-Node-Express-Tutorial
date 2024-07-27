@@ -10,7 +10,6 @@ router.get("/", logRequestMiddleware, getAllBooks)
 
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-
         if (!req.body.bookName || !req.body.author) {
             return res.status(400).json({
                 message: "some fields are missing!!",

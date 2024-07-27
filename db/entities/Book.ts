@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Author } from "./Author.js";
 
 @Entity("book")
 export class Book extends BaseEntity {
@@ -8,6 +9,6 @@ export class Book extends BaseEntity {
     @Column({ length: 255, nullable: false })
     bookName: string;
 
-    @Column({ length: 255, nullable: false })
-    author: string
+    @ManyToOne(() => Author, author => author.books)
+    author: Author
 }
