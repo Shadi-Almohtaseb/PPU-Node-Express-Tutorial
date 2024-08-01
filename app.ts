@@ -3,7 +3,9 @@ import express from 'express';
 import env from "dotenv";
 import bookRoute from "./routes/book.js"
 import authorRoute from "./routes/author.js"
+import library from "./routes/library.js"
 import dataSource from "./db/dbConfig.js";
+import address from "./routes/address.js";
 import { customErrorHandler, DefaultErrorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -16,7 +18,9 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 app.use("/books", bookRoute);
-app.use("/author", authorRoute)
+app.use("/author", authorRoute);
+app.use("/library", library)
+app.use("/address", address)
 
 app.use(customErrorHandler)
 

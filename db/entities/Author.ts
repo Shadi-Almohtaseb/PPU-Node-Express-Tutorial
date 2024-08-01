@@ -1,5 +1,7 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, BeforeInsert, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Book } from "./Book.js";
+import { Address } from "./Address.js";
+import bcrypt from "bcrypt"
 
 @Entity("author")
 export class Author extends BaseEntity {
@@ -9,8 +11,15 @@ export class Author extends BaseEntity {
     @Column({ length: 255 })
     name: string
 
-    @Column( { length: 255 })
+    @Column({ length: 255 })
     email: string
+
+    @BeforeInsert()
+    async hashPassword() {
+        if (this.password) {
+            this.password = await bcrypt.hash(this.password, 10);
+        }
+    }
 
     @Column({ length: 255 })
     password: string
@@ -20,4 +29,13 @@ export class Author extends BaseEntity {
 
     @OneToMany(() => Book, book => book.author)
     books: Book[]
+
+    @OneToOne(() => Address, address => address.author)
+    @JoinColumn(
+        {
+            name: "addressId",
+            referencedColumnName: "id"
+        }
+    )
+    address: Address
 }

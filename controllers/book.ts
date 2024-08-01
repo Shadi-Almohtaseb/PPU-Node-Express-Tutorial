@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { Book } from "../db/entities/Book.js";
 import { AppError } from "../errors/AppErrors.js";
 import { Author } from "../db/entities/Author.js";
+import { Library } from "../db/entities/library.js";
+import { In } from "typeorm";
 
 const books = [
     {
@@ -38,32 +40,33 @@ const getAllBooks = async (req: Request, res: Response) => {
     })
 }
 
-const createBook = async (bookFromPostman: Book, authorId: string) => {
-    const author = await Author.findOne({ where: {id: authorId}})
-    
+const createBook = async (bookFromPostman: Book, authorId: string, librariesIds: number[]) => {
+    const author = await Author.findOne({ where: { id: authorId } })
     if (!author) {
         throw new AppError("author dose not exists", 404, true)
     }
 
+    const libraries = await Library.find({ where: { id: In(librariesIds) } })
+    if (libraries.length !== librariesIds.length) {
+        throw new AppError("some libraries are not exists", 404, true)
+    }
+
     const book = await Book.findOne({
-        where: { 
-             bookName: bookFromPostman.bookName ,
-             author: author 
-            }
-        
+        where: {
+            bookName: bookFromPostman.bookName,
+            author: author
+        }
+
     });
 
     if (book) {
         throw new AppError("book already exists", 409, true)
     }
 
-//     const newBook = Book.create(
-//        bookFromPostman
-//    )
-
     const newBook = Book.create({
         ...bookFromPostman,
-        author
+        author,
+        libraries
     })
 
     return newBook.save()

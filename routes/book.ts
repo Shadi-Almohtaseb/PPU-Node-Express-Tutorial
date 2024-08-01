@@ -10,14 +10,14 @@ router.get("/", logRequestMiddleware, getAllBooks)
 
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (!req.body.bookName || !req.body.authorId) {
+        if (!req.body.bookName || !req.body.authorId || !req.body.libraries) {
             return res.status(400).json({
                 message: "some fields are missing!!",
                 success: false
             })
         }
 
-        const book = await createBook(req.body, req.body.authorId)
+        const book = await createBook(req.body, req.body.authorId, req.body.libraries)
 
         res.json({
             message: "book created successfully",

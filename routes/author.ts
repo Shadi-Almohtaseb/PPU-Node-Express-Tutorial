@@ -3,16 +3,16 @@ import { createAuthorController } from "../controllers/author.js";
 
 const router = Router()
 
-router.post("/", async (req: Request, res: Response, next:NextFunction) => {
+router.post("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (!req.body.name || !req.body.email ||!req.body.password) {
+        if (!req.body.name || !req.body.email || !req.body.password || !req.body.addressId) {
             res.status(400).json({
                 message: "some fields are missing",
                 success: false
             })
         }
 
-        const author =  await createAuthorController(req.body)
+        const author = await createAuthorController(req.body, req.body.addressId)
 
         res.status(201).json({
             message: "Author created successfully",

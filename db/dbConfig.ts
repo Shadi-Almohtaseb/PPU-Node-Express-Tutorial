@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm";
 import { Book } from "./entities/Book.js";
 import { Author } from "./entities/Author.js";
+import { Library } from "./entities/library.js";
+import { Address } from "./entities/Address.js";
 
 
 const dataSource = new DataSource({
@@ -12,7 +14,7 @@ const dataSource = new DataSource({
     database: "books-db",
     synchronize: true,
     logging: false,
-    entities: [Book, Author]
+    entities: [Book, Author, Library, Address]
 })
 
 export default dataSource;
